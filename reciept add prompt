@@ -1,0 +1,9 @@
+Add an AI receipt scanner to my finance dashboard — no chat mentor, just an import tool.
+
+In the Net Worth section, add a "Scan a receipt" card where I can drag in a photo, click to upload, or paste with ⌘V. When an image is added:
+
+Downscale it client-side (≤1568px JPEG) and POST it to a new server endpoint.
+The endpoint should call Claude's vision model with forced tool-use so it always returns clean structured JSON: merchant, date, currency, total, tax, category, items[]. Keep the API key server-side, matching my existing /api/nova proxy pattern (raw fetch, no SDK).
+Show an editable confirmation card with the merchant, total, currency, the extracted line items, and an account picker ("Deduct from").
+On Apply, subtract the total (converted to my base currency via the existing FX rates) from the chosen account and add an entry to the Recent Activity log — reuse my existing "deduct from account" logic.
+Match the existing dark glass design system and storeGet/storeSet helpers. Handle the not-a-receipt case, unreadable images, no-accounts-yet, and insufficient-balance (confirm before going negative). Verify the full flow in a browser before finishing.
